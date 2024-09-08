@@ -1,0 +1,11 @@
+# Directories
+.venv
+.terraform
+
+# Files
+.terraform.tfstate*
+terraform.tfstate*
+.decrypted~*.yaml
+.decrypted~*.yml
+kubeconfig
+talosconfig

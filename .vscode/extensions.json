@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+      "HashiCorp.terraform",
+      "signageos.signageos-vscode-sops",
+      "editorconfig.editorconfig"
+  ]
+}

@@ -1,0 +1,27 @@
+---
+version: "3"
+
+tasks:
+  init:
+    desc: Initialize terraform dependencies
+    dir: terraform
+    cmds:
+      - terraform init {{.CLI_ARGS}}
+
+  plan:
+    desc: Preview the cluster infrastructure
+    dir: terraform
+    cmds:
+      - terraform plan {{.CLI_ARGS}}
+
+  apply:
+    desc: Spin up and bootstrap the cluster
+    dir: terraform
+    cmds:
+      - terraform apply {{.CLI_ARGS}}
+
+  destroy:
+    desc: Destroy the infrastructure
+    dir: terraform
+    cmds:
+      - terraform destroy {{.CLI_ARGS}}
