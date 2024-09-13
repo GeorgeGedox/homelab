@@ -16,7 +16,6 @@ vm_data = {
   network_subnet_range  = 23
   starting_vmid         = 600
   cloud_init_datastore  = "local-lvm"
-  talos_base_image_path = "nas-tank:iso/talos-nocloud-amd64.img"
 }
 
 node_definition = {

@@ -30,11 +30,10 @@ variable "talos_image" {
 variable "vm_data" {
   description = "Common values for Proxmox VM creation"
   type = object({
-    network_gateway       = string
-    network_subnet_range  = number
-    starting_vmid         = number
-    cloud_init_datastore  = string
-    talos_base_image_path = string
+    network_gateway      = string
+    network_subnet_range = number
+    starting_vmid        = number
+    cloud_init_datastore = string
   })
 }
 
