@@ -1,11 +1,11 @@
-resource "time_sleep" "delay_1m" {
+resource "time_sleep" "delay_2m" {
   depends_on = [talos_machine_bootstrap.bootstrap]
 
-  create_duration = "1m"
+  create_duration = "2m"
 }
 
 resource "helm_release" "cilium" {
-  depends_on = [time_sleep.delay_1m, local_sensitive_file.kubeconfig]
+  depends_on = [time_sleep.delay_2m, local_sensitive_file.kubeconfig]
 
   name       = "cilium"
   repository = "https://helm.cilium.io/"
