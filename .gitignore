@@ -9,3 +9,4 @@ terraform.tfstate*
 .decrypted~*.yml
 kubeconfig
 talosconfig
+TODO.md

@@ -21,10 +21,6 @@ data "talos_machine_configuration" "worker" {
   machine_type     = "worker"
   cluster_endpoint = "https://${local._first_controlplane}:6443"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
-
-  config_patches = [
-    file("${path.module}/patches/features.yaml")
-  ]
 }
 
 resource "talos_machine_configuration_apply" "master" {
@@ -37,7 +33,8 @@ resource "talos_machine_configuration_apply" "master" {
 
   config_patches = [
     file("${path.module}/patches/cni.yaml"),
-    file("${path.module}/patches/features.yaml")
+    file("${path.module}/patches/hostdns.yaml"),
+    file("${path.module}/patches/sysctl.yaml")
   ]
 }
 
@@ -48,6 +45,11 @@ resource "talos_machine_configuration_apply" "worker" {
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
   node                        = each.key
+
+  config_patches = [
+    file("${path.module}/patches/hostdns.yaml"),
+    file("${path.module}/patches/sysctl.yaml")
+  ]
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {

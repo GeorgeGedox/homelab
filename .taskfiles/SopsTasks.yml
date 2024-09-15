@@ -2,6 +2,11 @@
 version: "3"
 
 tasks:
+  list:
+    desc: List all SOPS files in the repo
+    cmds:
+      - find . -type f -name "*.sops.*" ! -name ".sops.yaml" -print
+
   encrypt:
     desc: encrypt sops file 'to use must include -- before path to file.' eg "task sops:encrypt -- file.yml"
     cmds:
@@ -11,3 +16,25 @@ tasks:
     desc: decrypt sops file 'to use must include -- before path to file.'  eg "task sops:decrypt -- file.yml"
     cmds:
       - sops --decrypt --in-place {{.CLI_ARGS}}
+
+  encrypt-all:
+    desc: Encrypt all SOPS files found in the cluster directory
+    cmds:
+      - for: { var: file }
+        task: .encrypt-loop
+        vars:
+          file: "{{.ITEM}}"
+    vars:
+      file:
+        sh: find "{{.CLUSTER_DIR}}" -type f -name "*.sops.*" -exec grep -L "ENC\[AES256_GCM" {} \;
+
+  .encrypt-loop:
+    internal: true
+    cmd: sops --encrypt --in-place {{.file}}
+    requires:
+      vars: ["file"]
+    preconditions:
+      - msg: Missing Sops config file
+        sh: test -f {{.SOPS_CONFIG_FILE}}
+    vars:
+      SOPS_CONFIG_FILE: "{{.ROOT_DIR}}/.sops.yaml"
