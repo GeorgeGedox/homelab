@@ -42,6 +42,19 @@ node_definition = {
           size      = 40
         }
       ]
+    },
+    "192.168.1.32" = {
+      node                = "epsilon"
+      cores               = 4
+      memory              = 4096
+      boot_disk_size      = 20
+      boot_disk_datastore = "ssd"
+      extra_disks = [
+        {
+          datastore = "nvme-ssd"
+          size      = 40
+        }
+      ]
     }
   }
 }

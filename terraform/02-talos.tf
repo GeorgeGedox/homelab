@@ -31,7 +31,7 @@ resource "talos_machine_configuration_apply" "master" {
   machine_configuration_input = data.talos_machine_configuration.master.machine_configuration
   node                        = each.key
 
-  config_patches = concat([for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)], [for f in fileset(path.module, "patches/common/*.yaml") : file(f)])
+  config_patches = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)])
 }
 
 resource "talos_machine_configuration_apply" "worker" {
@@ -42,7 +42,7 @@ resource "talos_machine_configuration_apply" "worker" {
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
   node                        = each.key
 
-  config_patches = [for f in fileset(path.module, "patches/common/*.yaml") : file(f)]
+  config_patches = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)])
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {
