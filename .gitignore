@@ -9,4 +9,5 @@ terraform.tfstate*
 .decrypted~*.yml
 kubeconfig
 talosconfig
+dbench.yaml
 TODO.md
