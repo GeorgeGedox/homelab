@@ -1,4 +1,0 @@
-- `providers.tf` - Definitions of the providers
-- `proxmox.tf` - Handles the creation of the VMs
-- `main.tf` - Loads secrets and configures providers
-- `definitions.tf` - Contains local vars and variable definitions

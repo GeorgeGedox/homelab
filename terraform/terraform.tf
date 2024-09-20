@@ -5,7 +5,7 @@ terraform {
     organization = "georgev"
 
     workspaces {
-      name = "talos-cluster"
+      name = "homelab"
     }
   }
 
@@ -25,19 +25,9 @@ terraform {
       version = "0.6.0-beta.0"
     }
 
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.15"
-    }
-
     local = {
       source  = "hashicorp/local"
       version = "~> 2.5"
-    }
-
-    time = {
-      source  = "hashicorp/time"
-      version = "0.12.0"
     }
   }
 }
@@ -51,10 +41,4 @@ provider "proxmox" {
   endpoint = data.sops_file.secrets.data["proxmox_url"]
   username = data.sops_file.secrets.data["proxmox_username"]
   password = data.sops_file.secrets.data["proxmox_password"]
-}
-
-provider "helm" {
-  kubernetes {
-    config_path = "${path.root}/../kubeconfig"
-  }
 }
