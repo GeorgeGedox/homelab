@@ -2,17 +2,30 @@
 version: "3"
 
 tasks:
-
   verify:
     desc: Verify flux meets the prerequisites
     cmds:
       - flux check --pre
 
   bootstrap:
-    desc: Prepare cluster for flux installation
+    desc: Bootstrap core apps needed for Talos
+    dir: "{{.ROOT_DIR}}/bootstrap"
     cmds:
-      - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/bootstrap
+      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
+      - helmfile --file helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
+    preconditions:
+      - msg: Missing kubeconfig
+        sh: test -f {{.ROOT_DIR}}/kubeconfig
+      - msg: Missing helmfile
+        sh: test -f helmfile.yaml
+
+  flux:
+    desc: Install flux on the cluster
+    cmds:
+      - kubectl apply --server-side --kustomize {{.ROOT_DIR}}/bootstrap/flux
       - cat {{.SOPS_AGE_KEY_FILE}} | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
+      - sops exec-file {{.ROOT_DIR}}/bootstrap/flux/gh-deploy-key.sops.yaml "kubectl apply --server-side --filename {}"
       - kubectl apply --server-side --kustomize {{.CLUSTER_DIR}}/flux/flux-system
     preconditions:
       - sh: test -f {{.SOPS_AGE_KEY_FILE}}

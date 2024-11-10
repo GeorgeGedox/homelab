@@ -3,12 +3,12 @@ cluster_data = {
 }
 
 talos_image = {
-  version           = "v1.7.6"
+  version           = "v1.8.1"
   arch              = "amd64"
   platform          = "nocloud"
   proxmox_datastore = "nas-tank"
   proxmox_node      = "epsilon"
-  schematic_id      = "831bcd3df93662159641b00d8b3bb96edc64b3911d507affe524e9c18a3a467f"
+  schematic_id      = "4d2f14467f85468b6b5ff0ba1747f7f0bcb97d351d516db0197885247093d6fd"
 }
 
 vm_data = {
@@ -22,37 +22,24 @@ node_definition = {
   masters = {
     "192.168.1.30" = {
       node                = "epsilon"
-      cores               = 2
-      memory              = 2048
-      boot_disk_size      = 20
-      boot_disk_datastore = "ssd"
+      cores               = 4
+      memory              = 8196
+      boot_disk_size      = 40
+      boot_disk_datastore = "samsung-ssd"
       extra_disks         = []
     }
   }
   workers = {
-    "192.168.1.31" = {
+    "192.168.1.35" = {
       node                = "epsilon"
       cores               = 4
-      memory              = 4096
-      boot_disk_size      = 20
-      boot_disk_datastore = "ssd"
+      memory              = 8196
+      boot_disk_size      = 40
+      boot_disk_datastore = "samsung-ssd"
       extra_disks = [
         {
           datastore = "nvme-ssd"
-          size      = 40
-        }
-      ]
-    },
-    "192.168.1.32" = {
-      node                = "epsilon"
-      cores               = 4
-      memory              = 4096
-      boot_disk_size      = 20
-      boot_disk_datastore = "ssd"
-      extra_disks = [
-        {
-          datastore = "nvme-ssd"
-          size      = 40
+          size      = 60
         }
       ]
     }

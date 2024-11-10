@@ -11,28 +11,30 @@ repositories:
     url: https://helm.cilium.io
   - name: coredns
     url: https://coredns.github.io/helm
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
 
 releases:
   - name: prometheus-operator-crds
     namespace: monitoring
-    chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
-    version: 14.0.0
+    chart: prometheus-operator-crds
+    version: 16.0.0
 
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
-    version: 1.16.1
+    version: 1.16.3
     values:
-      - ../cluster/core/kube-system/cilium/app/values.yaml
+      - ../cluster/core/kube-system/cilium/app/helm-values.yaml
     needs:
       - monitoring/prometheus-operator-crds
 
   - name: coredns
     namespace: kube-system
     chart: coredns/coredns
-    version: 1.32.0
+    version: 1.36.1
     values:
-      - ../cluster/core/kube-system/coredns/app/values.yaml
+      - ../cluster/core/kube-system/coredns/app/helm-values.yaml
     needs:
       - monitoring/prometheus-operator-crds
       - kube-system/cilium

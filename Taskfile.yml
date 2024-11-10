@@ -42,16 +42,3 @@ tasks:
         sops
         hashicorp/tap/terraform
         tflint
-
-  install-helm-apps:
-    desc: Bootstrap core apps needed for Talos
-    dir: "{{.ROOT_DIR}}/bootstrap"
-    cmds:
-      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --file helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
-    preconditions:
-      - msg: Missing kubeconfig
-        sh: test -f {{.ROOT_DIR}}/kubeconfig
-      - msg: Missing helmfile
-        sh: test -f helmfile.yaml

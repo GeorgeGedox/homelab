@@ -12,7 +12,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "~> 0.64.0"
+      version = "~> 0.66.3"
     }
 
     sops = {
@@ -22,7 +22,7 @@ terraform {
 
     talos = {
       source  = "siderolabs/talos"
-      version = "0.6.0-beta.0"
+      version = "0.7.0-alpha.0"
     }
 
     local = {
@@ -31,7 +31,6 @@ terraform {
     }
   }
 }
-
 
 data "sops_file" "secrets" {
   source_file = "secrets.sops.yml"

@@ -1,31 +1,34 @@
 ---
+cluster:
+  id: 1
+  name: talos
 cgroup:
   automount:
     enabled: false
   hostRoot: /sys/fs/cgroup
 cni:
   exclusive: false
+bpf:
+  masquerade: false
+bgp:
+  enabled: false
 envoy:
   enabled: false
 hubble:
   enabled: false
 ipam:
   mode: kubernetes
-k8sServiceHost: 127.0.0.1
-k8sServicePort: 7445
-kubeProxyReplacement: true
-routingMode: native
-ipv4NativeRoutingCIDR: "10.100.0.0/16"
-autoDirectNodeRoutes: true
+ingressController:
+  enabled: false
 l2announcements:
   enabled: true
-loadBalancer:
-  algorithm: maglev
-  mode: snat
+externalIPs:
+  enabled: true
 operator:
   replicas: 1
   rollOutPods: true
-rollOutCiliumPods: true
+gatewayAPI:
+  enabled: true
 securityContext:
   capabilities:
     ciliumAgent:
@@ -44,3 +47,10 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
+kubeProxyReplacement: true
+routingMode: native
+ipv4NativeRoutingCIDR: "10.244.0.0/16"
+autoDirectNodeRoutes: true
+rollOutCiliumPods: true

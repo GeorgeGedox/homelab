@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./release.yaml
 configMapGenerator:
-  - name: coredns-values
+  - name: cilium-values
     files:
       - values.yaml=./helm-values.yaml
 configurations:

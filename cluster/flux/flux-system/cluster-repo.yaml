@@ -9,7 +9,9 @@ spec:
   interval: 30m
   ref:
     branch: master
-  url: https://github.com/GeorgeGedox/talos-cluster.git
+  url: ssh://git@github.com:GeorgeGedox/homelab.git
+  secretRef:
+    name: github-deploy-key
   ignore: |
     /*
     !/cluster

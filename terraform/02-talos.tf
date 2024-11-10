@@ -14,6 +14,7 @@ data "talos_machine_configuration" "master" {
   machine_type     = "controlplane"
   cluster_endpoint = "https://${local._first_controlplane}:6443"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
+  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)])
 }
 
 data "talos_machine_configuration" "worker" {
@@ -21,6 +22,7 @@ data "talos_machine_configuration" "worker" {
   machine_type     = "worker"
   cluster_endpoint = "https://${local._first_controlplane}:6443"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
+  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)])
 }
 
 resource "talos_machine_configuration_apply" "master" {
@@ -30,8 +32,6 @@ resource "talos_machine_configuration_apply" "master" {
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.master.machine_configuration
   node                        = each.key
-
-  config_patches = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)])
 }
 
 resource "talos_machine_configuration_apply" "worker" {
@@ -41,8 +41,6 @@ resource "talos_machine_configuration_apply" "worker" {
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
   node                        = each.key
-
-  config_patches = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)])
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {
