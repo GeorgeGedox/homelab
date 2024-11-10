@@ -27,13 +27,14 @@ spec:
       name: synology-csi-client-info
     storageClasses:
       synology-csi-delete:
+        reclaimPolicy: Delete
         parameters:
           dsm: ${STORAGE_NAS_IP}
           fsType: ext4
           location: /volume2
           protocol: iscsi
       synology-csi-retain:
-        isDefault: true
+        reclaimPolicy: Retain
         parameters:
           dsm: ${STORAGE_NAS_IP}
           fsType: ext4
