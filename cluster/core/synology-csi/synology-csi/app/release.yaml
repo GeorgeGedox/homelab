@@ -23,13 +23,8 @@ spec:
       retries: 3
   values:
     clientInfoSecret:
-      clients:
-        - host: ${STORAGE_NAS_IP}
-          https: false
-          password: ${SECRET_SYNO_PASS}
-          port: 5000
-          username: ${SECRET_SYNO_USER}
       create: false
+      name: synology-csi-client-info
     storageClasses:
       synology-csi-delete:
         parameters:
