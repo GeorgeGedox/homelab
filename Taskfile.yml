@@ -10,6 +10,7 @@ vars:
 env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
   VIRTUAL_ENV: "{{.VENV_PATH}}"
+  TALOSCONFIG: "{{.ROOT_DIR}}/talosconfig"
 
 includes:
   precommit: .taskfiles/PrecommitTasks.yml
@@ -17,6 +18,7 @@ includes:
   venv: .taskfiles/VenvTasks.yml
   tf: .taskfiles/TerraformTasks.yml
   cluster: .taskfiles/ClusterTasks.yml
+  talos: .taskfiles/TalosTasks.yml
 
 tasks:
   default:

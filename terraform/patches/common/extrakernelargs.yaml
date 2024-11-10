@@ -1,0 +1,7 @@
+---
+machine:
+  install:
+    extraKernelArgs:
+      - mitigations=off
+      - iommu.passthrough=1
+      - iommu.strict=0
