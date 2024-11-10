@@ -1,7 +1,7 @@
 machine:
   kubelet:
     extraMounts:
-      - destination: /var/openebs/local
+      - destination: /var/mnt/disk1/openebs/local
         type: bind
         source: /var/mnt/disk1/openebs/local
         options:
