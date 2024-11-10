@@ -25,7 +25,6 @@ spec:
     - kind: ConfigMap
       name: kubelet-csr-approver-values
   values:
-    replicas: 1
     metrics:
       enable: true
       serviceMonitor:
