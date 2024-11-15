@@ -7,3 +7,4 @@ resources:
   - ./coredns/ks.yaml
   - ./metrics-server/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
+  - ./reflector/ks.yaml
