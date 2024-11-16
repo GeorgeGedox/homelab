@@ -58,5 +58,3 @@ spec:
     txtOwnerId: talos-cluster
     txtPrefix: k8s.
     domainFilters: ["${SECRET_DOMAIN}"]
-    serviceMonitor:
-      enabled: true
