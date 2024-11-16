@@ -25,32 +25,28 @@ spec:
       retries: 3
   values:
     fullnameOverride: external-dns-adguard
-    provider: webhook
-    webhook:
-      image:
-        repository: ghcr.io/muhlba91/external-dns-provider-adguard
-        tag: v8.0.0
-      env:
-        - name: ADGUARD_URL
-          value: "${ADGUARD_URL}"
-        - name: ADGUARD_USER
-          value: "${SECRET_INTERNAL_ADGUARD_USER}"
-        - name: ADGUARD_PASSWORD
-          value: "${SECRET_INTERNAL_ADGUARD_PASS}"
-      livenessProbe:
-        httpGet:
-          path: /healthz
-          port: http-webhook
-        initialDelaySeconds: 10
-        timeoutSeconds: 5
-      readinessProbe:
-        httpGet:
-          path: /healthz
-          port: http-webhook
-        initialDelaySeconds: 10
-        timeoutSeconds: 5
-      service:
-        port: 8080
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/muhlba91/external-dns-provider-adguard
+          tag: v8.0.0
+        env:
+          ADGUARD_URL: "${ADGUARD_URL}"
+          ADGUARD_USER: "${SECRET_INTERNAL_ADGUARD_USER}"
+          ADGUARD_PASSWORD: "${SECRET_INTERNAL_ADGUARD_PASS}"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
     extraArgs:
       - --ignore-ingress-tls-spec
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
@@ -60,5 +56,3 @@ spec:
     txtOwnerId: talos-cluster
     txtPrefix: k8s.
     domainFilters: ["${SECRET_DOMAIN}"]
-    serviceMonitor:
-      enabled: false
