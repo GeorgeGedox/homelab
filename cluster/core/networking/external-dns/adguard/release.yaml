@@ -49,6 +49,8 @@ spec:
           port: http-webhook
         initialDelaySeconds: 10
         timeoutSeconds: 5
+      service:
+        port: 8080
     extraArgs:
       - --ignore-ingress-tls-spec
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
