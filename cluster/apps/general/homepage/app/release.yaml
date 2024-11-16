@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: homepage
+      version: 2.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: jameswynn
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/gethomepage/homepage
+      tag: v0.9.11
+    enableRbac: true
+    serviceAccount:
+      create: true
+      name: homepage
+    env:
+      TZ: "${TIMEZONE}"
+    ingress:
+      main:
+        enabled: true
+        labels:
+          gethomepage.dev/enabled: "false"
+        ingressClassName: nginx
+        hosts:
+          - host: &host start.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    widgets:
+      - resources:
+          backend: kubernetes
+          expanded: true
+          cpu: true
+          memory: true
+      - search:
+          provider: duckduckgo
+          target: _blank
+      - kubernetes:
+          cluster:
+            show: true
+            cpu: true
+            memory: true
+            showLabel: true
+            label: "cluster"
+          nodes:
+            show: true
+            cpu: true
+            memory: true
+            showLabel: true
+    kubernetes:
+      mode: cluster
