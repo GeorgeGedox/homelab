@@ -8,3 +8,4 @@ resources:
   - ./metrics-server/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./reflector/ks.yaml
+  - ./descheduler/ks.yaml
