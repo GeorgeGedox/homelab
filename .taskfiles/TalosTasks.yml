@@ -10,9 +10,10 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
       - task: up
     vars:
-      # TODO: Fetch these from a file. Maybe have a .talosupgrade file
-      TALOS_SCHEMATIC_ID: 831bcd3df93662159641b00d8b3bb96edc64b3911d507affe524e9c18a3a467f
-      TALOS_VERSION: v1.8.1
+      TALOS_SCHEMATIC_ID:
+        sh: echo "var.talos_image.schematic_id" | terraform console -var-file vars.auto.tfvars
+      TALOS_VERSION:
+        sh: echo "var.talos_image.version" | terraform console -var-file vars.auto.tfvars
     requires:
       vars: [HOSTNAME]
     preconditions:
@@ -20,6 +21,22 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
       - talosctl config info &>/dev/null
       - test -f {{.TALOSCONFIG}}
+      - which kubectl talosctl
+
+  remove-node:
+    desc: Remove a single node from the cluster [HOSTNAME=required]
+    cmds:
+      - task: down
+      - talosctl --nodes {{.HOSTNAME}} reset --timeout=10m --graceful=true
+      - kubectl delete node {{.HOSTNAME}}
+      - task: up
+    requires:
+      vars: [HOSTNAME]
+    preconditions:
+      - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
+      - talosctl config info &>/dev/null
+      - test -f {{.TALOSCONFIG}}
+      - test -f {{.KUBECONFIG}}
       - which kubectl talosctl
 
   down:

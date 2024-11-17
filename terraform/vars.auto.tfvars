@@ -8,7 +8,7 @@ talos_image = {
   platform          = "nocloud"
   proxmox_datastore = "nas-tank"
   proxmox_node      = "epsilon"
-  schematic_id      = "4d2f14467f85468b6b5ff0ba1747f7f0bcb97d351d516db0197885247093d6fd"
+  schematic_id      = "831bcd3df93662159641b00d8b3bb96edc64b3911d507affe524e9c18a3a467f"
 }
 
 vm_data = {
