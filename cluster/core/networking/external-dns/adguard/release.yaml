@@ -54,6 +54,6 @@ spec:
       - --ignore-ingress-tls-spec
     policy: sync
     sources: ["ingress", "crd"]
-    txtOwnerId: talos-cluster
+    txtOwnerId: internal-dns
     txtPrefix: k8s.
     domainFilters: ["${SECRET_DOMAIN}"]
