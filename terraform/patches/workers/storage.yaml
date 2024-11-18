@@ -8,6 +8,15 @@ machine:
           - bind
           - rshared
           - rw
+
+      - destination: /var/mnt/disk1/longhorn
+        type: bind
+        source: /var/mnt/disk1/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+
   disks:
     - device: /dev/sdb
       partitions:
