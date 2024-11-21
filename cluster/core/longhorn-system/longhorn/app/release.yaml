@@ -58,6 +58,6 @@ spec:
       freezeFilesystemForSnapshot: enabled
       autoCleanupSnapshotWhenDeleteBackup: true
       rwxVolumeFastFailover: true
-      defaultDataPath: /var/mnt/disk1/longhorn
+      defaultDataPath: /var/mnt/storage/longhorn
       backupTarget: "nfs://${STORAGE_NAS_IP}:/volume2/cluster-backups"
       defaultLonghornStaticStorageClass: "longhorn"

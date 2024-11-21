@@ -1,17 +1,17 @@
 machine:
   kubelet:
     extraMounts:
-      - destination: /var/mnt/disk1/openebs/local
+      - destination: /var/mnt/storage/openebs/local
         type: bind
-        source: /var/mnt/disk1/openebs/local
+        source: /var/mnt/storage/openebs/local
         options:
           - bind
           - rshared
           - rw
 
-      - destination: /var/mnt/disk1/longhorn
+      - destination: /var/mnt/storage/longhorn
         type: bind
-        source: /var/mnt/disk1/longhorn
+        source: /var/mnt/storage/longhorn
         options:
           - bind
           - rshared
@@ -20,4 +20,4 @@ machine:
   disks:
     - device: /dev/sdb
       partitions:
-        - mountpoint: /var/mnt/disk1
+        - mountpoint: /var/mnt/storage
