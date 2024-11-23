@@ -36,28 +36,18 @@ spec:
       serviceMonitor:
         enabled: true
     persistence:
-      defaultClass: false
+      defaultClass: true
       defaultClassReplicaCount: 2
       reclaimPolicy: Retain
       recurringJobSelector:
         enable: false
     defaultSettings:
-      orphanAutoDeletion: true
+      defaultReplicaCount: 2
       storageOverProvisioningPercentage: 100
       storageMinimalAvailablePercentage: 10
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       restoreVolumeRecurringJobs: true
-      autoCleanupSystemGeneratedSnapshot: true
-      autoCleanupRecurringJobBackupSnapshot: true
       concurrentAutomaticEngineUpgradePerNodeLimit: 1
-      fastReplicaRebuildEnabled: true
-      removeSnapshotsDuringFilesystemTrim: true
-      v1DataEngine: true
-      v2DataEngine: false
-      allowCollectingLonghornUsageMetrics: false
-      freezeFilesystemForSnapshot: enabled
-      autoCleanupSnapshotWhenDeleteBackup: true
-      rwxVolumeFastFailover: true
       defaultDataPath: /var/mnt/storage/longhorn
       backupTarget: "nfs://${STORAGE_NAS_IP}:/volume2/cluster-backups"
       defaultLonghornStaticStorageClass: "longhorn"
