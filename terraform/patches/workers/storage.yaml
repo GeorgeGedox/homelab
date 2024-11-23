@@ -1,4 +1,6 @@
 machine:
+  nodeLabels:
+    openebs.io/engine: mayastor
   kubelet:
     extraMounts:
       - destination: /var/mnt/storage/openebs/local

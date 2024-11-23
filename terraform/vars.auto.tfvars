@@ -56,5 +56,18 @@ node_definition = {
         }
       ]
     }
+    "192.168.1.37" = {
+      node                = "epsilon"
+      cores               = 4
+      memory              = 8196
+      boot_disk_size      = 40
+      boot_disk_datastore = "samsung-ssd"
+      extra_disks = [
+        {
+          datastore = "nvme-ssd"
+          size      = 160
+        }
+      ]
+    }
   }
 }
