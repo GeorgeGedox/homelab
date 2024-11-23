@@ -1,6 +1,7 @@
 ---
 machine:
   sysctls:
+    vm.nr_hugepages: "1024"
     fs.inotify.max_queued_events: "65536"
     fs.inotify.max_user_watches: "524288"
     fs.inotify.max_user_instances: "8192"

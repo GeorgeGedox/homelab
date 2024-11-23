@@ -36,7 +36,6 @@ spec:
       etcd:
         localpvScConfig:
           basePath: /var/mnt/storage/openebs/etcd
-        replicaCount: 2
       loki-stack:
         localpvScConfig:
           basePath: /var/mnt/storage/openebs/loki
