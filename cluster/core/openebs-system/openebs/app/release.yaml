@@ -44,6 +44,17 @@ spec:
       loki-stack:
         localpvScConfig:
           basePath: /var/mnt/storage/openebs/loki
+      io_engine:
+        cpuCount: "1"
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+            hugepages2Mi: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+            hugepages2Mi: "2Gi"
     localpv-provisioner:
       hostpathClass:
         enabled: true
