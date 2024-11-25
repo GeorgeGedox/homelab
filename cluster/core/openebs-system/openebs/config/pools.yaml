@@ -1,0 +1,8 @@
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: pool-test
+spec:
+  node: talos-1-worker
+  disks: ["aio:///dev/sdc"]

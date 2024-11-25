@@ -68,7 +68,7 @@ resource "proxmox_virtual_environment_vm" "cluster_vm" {
   lifecycle {
     ignore_changes = [
       cpu["architecture"],
-      disk["file_id"]
+      disk[0].file_id
     ]
   }
 }

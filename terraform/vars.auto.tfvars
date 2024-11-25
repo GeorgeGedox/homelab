@@ -40,6 +40,10 @@ node_definition = {
         {
           datastore = "nvme-ssd"
           size      = 160
+        },
+        {
+          datastore = "nvme-ssd"
+          size      = 120
         }
       ]
     }
