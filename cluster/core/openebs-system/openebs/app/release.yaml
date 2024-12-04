@@ -28,33 +28,9 @@ spec:
           enabled: false
         zfs:
           enabled: false
-    mayastor:
-      csi:
-        node:
-          initContainers:
-            enabled: false
-      etcd:
-        localpvScConfig:
-          basePath: /var/mnt/storage/openebs/etcd
-      loki-stack:
-        localpvScConfig:
-          basePath: /var/mnt/storage/openebs/loki
-      io_engine:
-        cpuCount: "1"
-        resources:
-          limits:
-            cpu: "250m"
-            memory: "1Gi"
-            hugepages2Mi: "2Gi"
-          requests:
-            cpu: "250m"
-            memory: "1Gi"
-            hugepages2Mi: "2Gi"
-      obs:
-        callhome:
+      replicated:
+        mayastor:
           enabled: false
-      eventing:
-        enabled: false
     localpv-provisioner:
       hostpathClass:
         enabled: true
