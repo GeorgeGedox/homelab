@@ -31,6 +31,30 @@ spec:
       name: homepage
     env:
       TZ: "${TIMEZONE}"
+    config:
+      widgets:
+        - resources:
+            backend: kubernetes
+            expanded: true
+            cpu: true
+            memory: true
+        - search:
+            provider: duckduckgo
+            target: _blank
+        - kubernetes:
+            cluster:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+              label: "cluster"
+            nodes:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+      kubernetes:
+        mode: cluster
     ingress:
       main:
         enabled: true
@@ -45,26 +69,3 @@ spec:
         tls:
           - hosts:
               - *host
-    widgets:
-      - resources:
-          backend: kubernetes
-          expanded: true
-          cpu: true
-          memory: true
-      - search:
-          provider: duckduckgo
-          target: _blank
-      - kubernetes:
-          cluster:
-            show: true
-            cpu: true
-            memory: true
-            showLabel: true
-            label: "cluster"
-          nodes:
-            show: true
-            cpu: true
-            memory: true
-            showLabel: true
-    kubernetes:
-      mode: cluster
