@@ -39,28 +39,11 @@ node_definition = {
       extra_disks = [
         {
           datastore = "nvme-ssd"
-          size      = 160
-        },
-        {
-          datastore = "nvme-ssd"
-          size      = 120
+          size      = 250
         }
       ]
     }
     "192.168.1.36" = {
-      node                = "epsilon"
-      cores               = 4
-      memory              = 8196
-      boot_disk_size      = 40
-      boot_disk_datastore = "samsung-ssd"
-      extra_disks = [
-        {
-          datastore = "nvme-ssd"
-          size      = 160
-        }
-      ]
-    }
-    "192.168.1.37" = {
       node                = "epsilon"
       cores               = 4
       memory              = 8196
