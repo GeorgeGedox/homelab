@@ -4,6 +4,7 @@ version: "3"
 tasks:
   upgrade-node:
     desc: Upgrade Talos on a single node [HOSTNAME=required]
+    dir: terraform
     cmds:
       - task: down
       - talosctl --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" --timeout=10m

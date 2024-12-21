@@ -3,12 +3,12 @@ cluster_data = {
 }
 
 talos_image = {
-  version           = "v1.8.1"
+  version           = "v1.9.0"
   arch              = "amd64"
   platform          = "nocloud"
   proxmox_datastore = "nas-tank"
   proxmox_node      = "epsilon"
-  schematic_id      = "831bcd3df93662159641b00d8b3bb96edc64b3911d507affe524e9c18a3a467f"
+  schematic_id      = "2d9d79fe710caccded6d4b221e24a5e8316073f66b3061b6f2c49de07684c812"
 }
 
 vm_data = {
