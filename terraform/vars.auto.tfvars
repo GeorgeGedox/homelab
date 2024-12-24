@@ -52,7 +52,7 @@ node_definition = {
       extra_disks = [
         {
           datastore = "nvme-ssd"
-          size      = 160
+          size      = 250
         }
       ]
     }
