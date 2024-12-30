@@ -35,7 +35,7 @@ jobs:
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@v2.4.0
 
-      - uses: allenporter/flux-local/action/diff@4.3.1
+      - uses: allenporter/flux-local/action/diff@6.1.1
         id: diff
         with:
           live-branch: master
@@ -66,7 +66,7 @@ jobs:
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@v2.4.0
 
-      - uses: allenporter/flux-local/action/test@4.3.1
+      - uses: allenporter/flux-local/action/test@6.1.1
         with:
           path: cluster
           enable-helm: true
