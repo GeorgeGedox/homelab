@@ -33,7 +33,7 @@ jobs:
           path: default
 
       - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@v2.2.3
+        uses: fluxcd/flux2/action@v2.4.0
 
       - uses: allenporter/flux-local/action/diff@4.3.1
         id: diff
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@v2.2.3
+        uses: fluxcd/flux2/action@v2.4.0
 
       - uses: allenporter/flux-local/action/test@4.3.1
         with:
