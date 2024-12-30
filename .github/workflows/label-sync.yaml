@@ -1,6 +1,5 @@
 ---
 name: "Label Sync"
-permissions: write-all
 
 on:
   workflow_dispatch:
@@ -14,6 +13,9 @@ jobs:
   label-sync:
     name: Label Sync
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4

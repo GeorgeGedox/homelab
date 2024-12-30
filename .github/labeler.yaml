@@ -1,0 +1,15 @@
+---
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file: terraform/**/*
+area/github:
+  - changed-files:
+      - any-glob-to-any-file: .github/**/*
+area/kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: cluster/**/*
+      - any-glob-to-any-file: bootstrap/**/*
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file: .taskfiles/**/*
+      - any-glob-to-any-file: Taskfile*

@@ -1,0 +1,73 @@
+---
+name: "Flux D&T"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+    paths:
+      - "cluster/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flux-diff:
+    name: Flux Diff
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        resources: ["helmrelease", "kustomization"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
+        with:
+          ref: "${{ github.event.repository.default_branch }}"
+          path: default
+
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@v2.2.3
+
+      - uses: allenporter/flux-local/action/diff@4.3.1
+        id: diff
+        with:
+          live-branch: master
+          path: cluster
+          resource: ${{ matrix.resources }}
+
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Add comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: "${{ github.event.pull_request.number }}/${{ matrix.resources }}"
+          message-failure: Diff was not successful
+          message: |
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
+
+  flux-test:
+    name: Flux Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@v2.2.3
+
+      - uses: allenporter/flux-local/action/test@4.3.1
+        with:
+          path: cluster
+          enable-helm: true
+          enable-kyverno: false
