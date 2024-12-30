@@ -29,6 +29,9 @@
   "kustomize": {
     "fileMatch": ["(^|/)kustomization\\.ya?ml(?:\\.j2)?$"]
   },
+  "pip_requirements": {
+    "enabled": false
+  },
   // commit message topics
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newVersion}}",
