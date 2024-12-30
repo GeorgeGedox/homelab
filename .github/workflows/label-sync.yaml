@@ -1,5 +1,6 @@
 ---
 name: "Label Sync"
+permissions: write-all
 
 on:
   workflow_dispatch:
@@ -8,9 +9,6 @@ on:
       - "master"
     paths:
       - ".github/labels.yaml"
-
-permissions:
-  issues: write
 
 jobs:
   label-sync:
