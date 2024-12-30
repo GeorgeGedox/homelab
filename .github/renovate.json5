@@ -49,259 +49,122 @@
   pip_requirements: {
     enabled: false,
   },
+  // commit message topics
   commitMessageTopic: '{{depName}}',
   commitMessageExtra: 'to {{newVersion}}',
   commitMessageSuffix: '',
+  // package rules
   packageRules: [
+    // automerge
     {
-      description: [
-        'Auto merge Github Actions',
-      ],
-      matchManagers: [
-        'github-actions',
-      ],
+      description: ['Auto merge Github Actions'],
+      matchManagers: ['github-actions'],
       automerge: true,
       automergeType: 'branch',
       ignoreTests: true,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
+      matchUpdateTypes: ['minor', 'patch'],
     },
+    // groups
     {
-      description: [
-        'Flux Group',
-      ],
+      description: ['Flux Group'],
       groupName: 'Flux',
-      matchDatasources: [
-        'docker',
-        'github-tags',
-      ],
+      matchDatasources: ['docker', 'github-tags'],
       versioning: 'semver',
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
+      group: { commitMessageTopic: '{{{groupName}}} group' },
       separateMinorPatch: true,
-      matchPackageNames: [
-        '/fluxcd/',
-      ],
+      matchPackageNames: ['/fluxcd/'],
     },
+    // commit message topics
+    { matchDatasources: ['helm'], commitMessageTopic: 'chart {{depName}}' },
+    { matchDatasources: ['docker'], commitMessageTopic: 'image {{depName}}' },
+    // commit messages
     {
-      description: [
-        'Talos Group',
-      ],
-      groupName: 'Talos',
-      matchDatasources: [
-        'docker',
-      ],
-      group: {
-        commitMessageTopic: '{{{groupName}}} group',
-      },
-      separateMinorPatch: true,
-      matchPackageNames: [
-        '/siderolabs/talosctl/',
-        '/siderolabs/installer/',
-      ],
-    },
-    {
-      matchDatasources: [
-        'helm',
-      ],
-      commitMessageTopic: 'chart {{depName}}',
-    },
-    {
-      matchDatasources: [
-        'docker',
-      ],
-      commitMessageTopic: 'image {{depName}}',
-    },
-    {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['major'],
       commitMessagePrefix: 'feat(container)!: ',
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
       semanticCommitScope: 'container',
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
       semanticCommitScope: 'container',
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchUpdateTypes: [
-        'digest',
-      ],
+      matchDatasources: ['docker'],
+      matchUpdateTypes: ['digest'],
       semanticCommitType: 'chore',
       semanticCommitScope: 'container',
     },
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['major'],
       commitMessagePrefix: 'feat(helm)!: ',
     },
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
       semanticCommitScope: 'helm',
     },
     {
-      matchDatasources: [
-        'helm',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['helm'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
       semanticCommitScope: 'helm',
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['major'],
       commitMessagePrefix: 'feat(github-release)!: ',
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
       semanticCommitScope: 'github-release',
     },
     {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
       semanticCommitScope: 'github-release',
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['major'],
       commitMessagePrefix: 'feat(github-action)!: ',
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'minor',
-      ],
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['minor'],
       semanticCommitType: 'feat',
       semanticCommitScope: 'github-action',
     },
     {
-      matchManagers: [
-        'github-actions',
-      ],
-      matchUpdateTypes: [
-        'patch',
-      ],
+      matchManagers: ['github-actions'],
+      matchUpdateTypes: ['patch'],
       semanticCommitType: 'fix',
       semanticCommitScope: 'github-action',
     },
+    // labels
+    { matchUpdateTypes: ['major'], labels: ['type/major'] },
+    { matchUpdateTypes: ['minor'], labels: ['type/minor'] },
+    { matchUpdateTypes: ['patch'], labels: ['type/patch'] },
+    { matchDatasources: ['docker'], addLabels: ['renovate/container'] },
+    { matchDatasources: ['helm'], addLabels: ['renovate/helm'] },
     {
-      matchUpdateTypes: [
-        'major',
-      ],
-      labels: [
-        'type/major',
-      ],
+      matchDatasources: ['github-releases', 'github-tags'],
+      addLabels: ['renovate/github-release'],
     },
-    {
-      matchUpdateTypes: [
-        'minor',
-      ],
-      labels: [
-        'type/minor',
-      ],
-    },
-    {
-      matchUpdateTypes: [
-        'patch',
-      ],
-      labels: [
-        'type/patch',
-      ],
-    },
-    {
-      matchDatasources: [
-        'docker',
-      ],
-      addLabels: [
-        'renovate/container',
-      ],
-    },
-    {
-      matchDatasources: [
-        'helm',
-      ],
-      addLabels: [
-        'renovate/helm',
-      ],
-    },
-    {
-      matchDatasources: [
-        'github-releases',
-        'github-tags',
-      ],
-      addLabels: [
-        'renovate/github-release',
-      ],
-    },
-    {
-      matchManagers: [
-        'github-actions',
-      ],
-      addLabels: [
-        'renovate/github-action',
-      ],
-    },
+    { matchManagers: ['github-actions'], addLabels: ['renovate/github-action'] },
   ],
+  // custom managers
   customManagers: [
     {
       customType: 'regex',
@@ -309,9 +172,12 @@
         'Process custom dependencies',
       ],
       fileMatch: [
-        '(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$',
+        '^cluster/.+\\.ya?ml$',
       ],
       matchStrings: [
+        // Example:
+        // # renovate: datasource=kubernetes depName=fluxcd/flux repository=fluxcd/flux
+        // version: 1.19.0
         'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)',
       ],
       datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
