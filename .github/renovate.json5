@@ -43,7 +43,8 @@
   },
   kustomize: {
     fileMatch: [
-      '(^|/)kustomization\\.ya?ml(?:\\.j2)?$',
+      '(^|/)kustomization\\.ya?ml$',
+      '^bootstrap/kustomization\\.ya?ml$',
     ],
   },
   pip_requirements: {
