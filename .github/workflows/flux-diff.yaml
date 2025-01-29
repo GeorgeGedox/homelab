@@ -1,5 +1,5 @@
 ---
-name: "Flux D&T"
+name: "Flux Diff"
 
 on:
   pull_request:
@@ -52,22 +52,3 @@ jobs:
             ```diff
             ${{ steps.diff.outputs.diff }}
             ```
-
-  flux-test:
-    name: Flux Test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@v2.4.0
-
-      - uses: allenporter/flux-local/action/test@6.1.1
-        with:
-          path: cluster
-          enable-helm: true
-          enable-kyverno: false
