@@ -5,3 +5,5 @@ machine:
       - mitigations=off
       - iommu.passthrough=1
       - iommu.strict=0
+      - apparmor=0
+      - talos.auditd.disabled=1

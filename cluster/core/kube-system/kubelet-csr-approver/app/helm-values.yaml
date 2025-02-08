@@ -1,4 +1,4 @@
 ---
 replicas: 1
-providerRegex: ^(talos-[0-9]-.*)$
+providerRegex: ^(homelab-.*)$
 bypassDnsResolution: true

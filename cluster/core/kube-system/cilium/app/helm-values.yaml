@@ -1,7 +1,7 @@
 ---
 cluster:
   id: 1
-  name: talos
+  name: homelab
 cgroup:
   automount:
     enabled: false

@@ -11,6 +11,7 @@ tasks:
     desc: Bootstrap core apps needed for Talos
     dir: "{{.ROOT_DIR}}/bootstrap"
     cmds:
+      - task: storage-taints
       - until kubectl wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
       - helmfile --file helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - until kubectl wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
@@ -33,6 +34,20 @@ tasks:
           Age key file is not found. Did you forget to create it?
     vars:
       SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
+
+  storage-taints:
+    desc: Will taint and label all storage nodes
+    dir: "{{.ROOT_DIR}}/terraform"
+    vars:
+      STORAGE_NODES:
+        sh: echo 'join(",",keys(var.node_definition.storage))' | terraform console -var-file vars.auto.tfvars
+    cmds:
+      - bash {{.ROOT_DIR}}/.taskfiles/storage_taints.sh {{.STORAGE_NODES}} "{{.ROOT_DIR}}"
+    preconditions:
+      - talosctl config info &>/dev/null
+      - test -f {{.TALOSCONFIG}}
+      - test -f {{.KUBECONFIG}}
+      - which kubectl talosctl terraform
 
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository

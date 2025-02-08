@@ -1,8 +1,8 @@
 resource "proxmox_virtual_environment_vm" "cluster_vm" {
   for_each = local._merged_node_definitions
 
-  name            = "${var.cluster_data.name}-${index(keys(local._merged_node_definitions), each.key)}-${each.value.type}"
-  description     = "Managed by Terraform"
+  name            = "${var.cluster_data.name}-${coalesce(each.value.name, "${each.value.type}-${local._type_index_map[each.value.type][each.key]}")}"
+  description     = coalesce(each.value.description, "Managed by Terraform")
   tags            = ["terraform", each.value.type, var.cluster_data.name, each.value.node]
   vm_id           = var.vm_data.starting_vmid + index(keys(local._merged_node_definitions), each.key)
   node_name       = each.value.node

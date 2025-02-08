@@ -25,6 +25,14 @@ data "talos_machine_configuration" "worker" {
   config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)])
 }
 
+data "talos_machine_configuration" "storage" {
+  cluster_name     = var.cluster_data.name
+  machine_type     = "worker"
+  cluster_endpoint = "https://${local._first_controlplane}:6443"
+  machine_secrets  = talos_machine_secrets.this.machine_secrets
+  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/storage/*.yaml") : file(f)])
+}
+
 resource "talos_machine_configuration_apply" "master" {
   depends_on = [proxmox_virtual_environment_vm.cluster_vm]
   for_each   = var.node_definition.masters
@@ -40,6 +48,15 @@ resource "talos_machine_configuration_apply" "worker" {
 
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
+  node                        = each.key
+}
+
+resource "talos_machine_configuration_apply" "storage" {
+  depends_on = [proxmox_virtual_environment_vm.cluster_vm]
+  for_each   = var.node_definition.storage
+
+  client_configuration        = talos_machine_secrets.this.client_configuration
+  machine_configuration_input = data.talos_machine_configuration.storage.machine_configuration
   node                        = each.key
 }
 

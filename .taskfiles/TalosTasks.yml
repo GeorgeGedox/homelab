@@ -4,7 +4,7 @@ version: "3"
 tasks:
   upgrade-node:
     desc: Upgrade Talos on a single node [HOSTNAME=required]
-    dir: terraform
+    dir: "{{.ROOT_DIR}}/terraform"
     cmds:
       - task: down
       - talosctl --nodes {{.HOSTNAME}} upgrade --image="factory.talos.dev/installer/{{.TALOS_SCHEMATIC_ID}}:{{.TALOS_VERSION}}" --timeout=10m
@@ -22,7 +22,7 @@ tasks:
       - talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
       - talosctl config info &>/dev/null
       - test -f {{.TALOSCONFIG}}
-      - which kubectl talosctl
+      - which kubectl talosctl terraform
 
   remove-node:
     desc: Remove a single node from the cluster [HOSTNAME=required]
