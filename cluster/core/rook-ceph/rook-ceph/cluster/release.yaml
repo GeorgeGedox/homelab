@@ -82,7 +82,7 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: storage01
+          - name: homelab-storage-0
             devices:
               - name: "/dev/sdb"
       resources:
