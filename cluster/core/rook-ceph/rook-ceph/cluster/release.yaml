@@ -23,15 +23,10 @@ spec:
       retries: 3
   values:
     toolbox:
-      enabled: false
+      enabled: true
     monitoring:
       enabled: true
       createPrometheusRules: true
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
     ingress:
       dashboard:
         ingressClassName: nginx
@@ -147,6 +142,20 @@ spec:
           metadataServer:
             activeCount: 1
             activeStandby: true
+            placement:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: node-type
+                      operator: In
+                      values:
+                      - storage
+              tolerations:
+                - key: "storage-only"
+                  operator: "Equal"
+                  value: "true"
+                  effect: "NoSchedule"
         storageClass:
           enabled: true
           isDefault: false
