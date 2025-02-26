@@ -22,6 +22,14 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      tolerations:
+        - key: storage-only
+          operator: Equal
+          values: "true"
+          effect: NoSchedule
+      nodeSelector:
+        node-type: storage
     csi:
       attacherReplicaCount: 2
       provisionerReplicaCount: 2
@@ -37,13 +45,12 @@ spec:
         enabled: true
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 2
-      defaultDataLocality: "best-effort"
+      defaultClassReplicaCount: 1
       reclaimPolicy: Delete
-      migratable: true
+      migratable: false
       dataEngine: v1
     defaultSettings:
-      defaultReplicaCount: 2
+      defaultReplicaCount: 1
       storageOverProvisioningPercentage: 100
       storageMinimalAvailablePercentage: 10
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
