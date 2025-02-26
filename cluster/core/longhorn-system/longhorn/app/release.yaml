@@ -25,8 +25,7 @@ spec:
     global:
       tolerations:
         - key: storage-only
-          operator: Equal
-          values: "true"
+          operator: Exists
           effect: NoSchedule
       nodeSelector:
         node-type: storage
