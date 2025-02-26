@@ -27,6 +27,8 @@ spec:
         - key: storage-only
           operator: Exists
           effect: NoSchedule
+      nodeSelector:
+        node-type: storage
     csi:
       attacherReplicaCount: 2
       provisionerReplicaCount: 2
@@ -47,6 +49,8 @@ spec:
       migratable: false
       dataEngine: v1
     defaultSettings:
+      taintToleration: storage-only=true:NoSchedule
+      systemManagedComponentsNodeSelector: node-type=storage
       defaultReplicaCount: 1
       storageReservedPercentageForDefaultDisk: 10
       storageOverProvisioningPercentage: 100
