@@ -50,6 +50,7 @@ spec:
       dataEngine: v1
     defaultSettings:
       defaultReplicaCount: 1
+      storageReservedPercentageForDefaultDisk: 10
       storageOverProvisioningPercentage: 100
       storageMinimalAvailablePercentage: 10
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
