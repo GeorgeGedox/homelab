@@ -25,7 +25,7 @@ spec:
     config:
       clusters:
         - url: "${PROXMOX_CSI_URL}"
-          insecure: false
+          insecure: true
           token_id: "${PROXMOX_CSI_TOKEN_ID}"
           token_secret: "${PROXMOX_CSI_TOKEN_SECRET}"
           region: homelab
