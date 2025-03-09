@@ -5,63 +5,45 @@ resource "talos_machine_secrets" "this" {
 data "talos_client_configuration" "cluster_config" {
   cluster_name         = var.cluster_data.name
   client_configuration = talos_machine_secrets.this.client_configuration
-  nodes                = [for ip, values in var.node_definition.masters : ip]
-  endpoints            = [for ip, values in var.node_definition.masters : ip]
+  nodes                = [for ip, values in local._merged_node_definitions : ip]
+  endpoints            = [for ip, values in local._merged_node_definitions : ip if values.type == "master"]
 }
 
-data "talos_machine_configuration" "master" {
+data "talos_machine_configuration" "this" {
+  for_each         = local._merged_node_definitions
   cluster_name     = var.cluster_data.name
-  machine_type     = "controlplane"
+  machine_type     = each.value.type == "master" ? "controlplane" : "worker"
+  talos_version    = var.talos_image.version
   cluster_endpoint = "https://${local._first_controlplane}:6443"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
-  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)])
+  config_patches = each.value.type == "master" ? concat(
+    [for f in fileset(path.module, "patches/common/*.yaml") : file(f)],
+    [for f in fileset(path.module, "patches/controlplane/*.yaml") : file(f)],
+    [templatefile("${path.module}/patches/common/common.yaml.tftpl", {
+      region    = var.cluster_data.proxmox_cluster_name
+      node_name = each.value.node
+    })]
+    ) : concat(
+    [for f in fileset(path.module, "patches/common/*.yaml") : file(f)],
+    [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)],
+    [templatefile("${path.module}/patches/common/common.yaml.tftpl", {
+      region    = var.cluster_data.proxmox_cluster_name
+      node_name = each.value.node
+    })]
+  )
 }
 
-data "talos_machine_configuration" "worker" {
-  cluster_name     = var.cluster_data.name
-  machine_type     = "worker"
-  cluster_endpoint = "https://${local._first_controlplane}:6443"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
-  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/workers/*.yaml") : file(f)])
-}
-
-data "talos_machine_configuration" "storage" {
-  cluster_name     = var.cluster_data.name
-  machine_type     = "worker"
-  cluster_endpoint = "https://${local._first_controlplane}:6443"
-  machine_secrets  = talos_machine_secrets.this.machine_secrets
-  config_patches   = concat([for f in fileset(path.module, "patches/common/*.yaml") : file(f)], [for f in fileset(path.module, "patches/storage/*.yaml") : file(f)])
-}
-
-resource "talos_machine_configuration_apply" "master" {
+resource "talos_machine_configuration_apply" "this" {
   depends_on = [proxmox_virtual_environment_vm.cluster_vm]
-  for_each   = var.node_definition.masters
+  for_each   = local._merged_node_definitions
 
   client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.master.machine_configuration
-  node                        = each.key
-}
-
-resource "talos_machine_configuration_apply" "worker" {
-  depends_on = [proxmox_virtual_environment_vm.cluster_vm]
-  for_each   = var.node_definition.workers
-
-  client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
-  node                        = each.key
-}
-
-resource "talos_machine_configuration_apply" "storage" {
-  depends_on = [proxmox_virtual_environment_vm.cluster_vm]
-  for_each   = var.node_definition.storage
-
-  client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.storage.machine_configuration
+  machine_configuration_input = data.talos_machine_configuration.this[each.key].machine_configuration
   node                        = each.key
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {
-  depends_on = [talos_machine_configuration_apply.master]
+  depends_on = [talos_machine_configuration_apply.this]
 
   client_configuration = talos_machine_secrets.this.client_configuration
   node                 = local._first_controlplane

@@ -1,5 +1,6 @@
 cluster_data = {
   name = "homelab"
+  proxmox_cluster_name = "homelab"
 }
 
 talos_image = {
@@ -52,21 +53,6 @@ node_definition = {
       boot_disk_size      = 80
       boot_disk_datastore = "samsung-ssd"
       extra_disks         = []
-    }
-  }
-  storage = {
-    "192.168.1.40" = {
-      node                = "epsilon"
-      cores               = 4
-      memory              = 8196
-      boot_disk_size      = 80
-      boot_disk_datastore = "samsung-ssd"
-      extra_disks = [
-        {
-          datastore = "nvme-ssd"
-          size      = 250
-        }
-      ]
     }
   }
 }

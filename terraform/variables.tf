@@ -1,19 +1,15 @@
 locals {
-  _merged_node_definitions = merge({
-    for ip, values in var.node_definition.masters : ip => merge(values, { type = "master" })
-    }, {
-    for ip, values in var.node_definition.workers : ip => merge(values, { type = "worker" })
-    }, {
-    for ip, values in var.node_definition.storage : ip => merge(values, { type = "storage" })
-  })
+  _merged_node_definitions = merge(
+    { for ip, values in var.node_definition.masters : ip => merge(values, { type = "master" }) },
+    { for ip, values in var.node_definition.workers : ip => merge(values, { type = "worker" }) }
+  )
 
   _first_controlplane = [for ip, values in var.node_definition.masters : ip][0]
 
   _type_index_map = {
     for type, nodes in {
-      master  = var.node_definition.masters
-      worker  = var.node_definition.workers
-      storage = var.node_definition.storage
+      master = var.node_definition.masters
+      worker = var.node_definition.workers
       } : type => {
       for ip, values in nodes : ip => index(keys(nodes), ip)
     }
@@ -23,7 +19,8 @@ locals {
 variable "cluster_data" {
   description = "General cluster values"
   type = object({
-    name = string
+    name                 = string
+    proxmox_cluster_name = string
   })
 }
 
@@ -66,19 +63,6 @@ variable "node_definition" {
       }))
     }))
     workers = map(object({
-      name                = optional(string)
-      description         = optional(string)
-      node                = string
-      cores               = number
-      memory              = number
-      boot_disk_size      = number
-      boot_disk_datastore = string
-      extra_disks = list(object({
-        datastore = string
-        size      = number
-      }))
-    }))
-    storage = map(object({
       name                = optional(string)
       description         = optional(string)
       node                = string
