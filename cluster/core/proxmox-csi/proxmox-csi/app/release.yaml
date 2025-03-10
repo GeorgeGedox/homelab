@@ -28,10 +28,10 @@ spec:
           insecure: true
           token_id: "${PROXMOX_CSI_TOKEN_ID}"
           token_secret: "${PROXMOX_CSI_TOKEN_SECRET}"
-          region: homelab
+          region: "${PROXMOX_CSI_REGION}"
     storageClass:
       - name: proxmox-csi
-        storage: nvme-ssd
+        storage: "${PROXMOX_CSI_STORAGE_ID}"
         cache: none
         fstype: ext4
         reclaimPolicy: Delete
