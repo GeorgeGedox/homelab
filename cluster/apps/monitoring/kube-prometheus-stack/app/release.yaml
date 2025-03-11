@@ -3,22 +3,138 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: homepage
+  name: kube-prometheus-stack
 spec:
   interval: 30m
   chart:
     spec:
-      chart: homepage
-      version: 2.0.1
+      chart: kube-prometheus-stack
+      version: 69.8.2
       sourceRef:
         kind: HelmRepository
-        name: jameswynn
+        name: prometheus-community
         namespace: flux-system
   install:
+    crds: Skip
     remediation:
       retries: 3
   upgrade:
+    crds: Skip
     cleanupOnFail: true
     remediation:
       retries: 3
+  dependsOn:
+    - name: proxmox-csi
+      namespace: proxmox-csi
   values:
+    cleanPrometheusOperatorObjectNames: true
+
+    crds:
+      enabled: false
+
+    alertmanager:
+      enabled: false
+
+    nodeExporter:
+      enabled: false
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
+
+    kubeApiServer:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+
+    kubeControllerManager:
+      enabled: false
+
+    kubeEtcd:
+      enabled: false
+
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+
+    kubeProxy:
+      enabled: false
+
+    kubeScheduler:
+      enabled: false
+
+    kubeStateMetrics:
+      enabled: false
+
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 30m
+          memory: 250M
+        limits:
+          memory: 400M
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 5m
+            memory: 32M
+          limits:
+            memory: 32M
+
+    prometheus:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        pathType: Prefix
+        hosts:
+          - &host prometheus.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+
+      prometheusSpec:
+        replicas: 1
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        walCompression: true
+        alertingEndpoints: []
+        enableAdminAPI: true
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        replicaExternalLabelName: "__replica__"
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 2000M
+        retention: 14d
+        retentionSize: 50GB
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: proxmox-csi
+              resources:
+                requests:
+                  storage: 55Gi
