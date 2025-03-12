@@ -3,3 +3,11 @@ machine:
   kubelet:
     extraArgs:
       rotate-server-certificates: true
+    extraMounts:
+      - destination: /var/mnt
+        type: bind
+        source: /var/mnt
+        options:
+          - bind
+          - rshared
+          - rw
