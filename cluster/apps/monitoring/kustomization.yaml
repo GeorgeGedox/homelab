@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./node-exporter/ks.yaml
+  - ./alertmanager/ks.yaml
