@@ -38,22 +38,16 @@ spec:
             value: "${SECRET_INTERNAL_ADGUARD_USER}"
           - name: ADGUARD_PASSWORD
             value: "${SECRET_INTERNAL_ADGUARD_PASS}"
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
+          - name: SERVER_HOST
+            value: 0.0.0.0
+        securityContext:
+          readOnlyRootFilesystem: true
     extraArgs:
       - --ignore-ingress-tls-spec
     policy: sync
-    sources: ["ingress", "crd"]
-    txtOwnerId: internal-dns
-    txtPrefix: k8s.
+    registry: noop
+    interval: 30m
+    triggerLoopOnEvent: true
+    sources:
+      - ingress
     domainFilters: ["${SECRET_DOMAIN}"]
