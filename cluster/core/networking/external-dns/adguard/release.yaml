@@ -38,10 +38,24 @@ spec:
             value: "${SECRET_INTERNAL_ADGUARD_USER}"
           - name: ADGUARD_PASSWORD
             value: "${SECRET_INTERNAL_ADGUARD_PASS}"
-          - name: SERVER_HOST
-            value: 0.0.0.0
         securityContext:
           readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 10
+          successThreshold: 1
     extraArgs:
       - --ignore-ingress-tls-spec
     policy: sync
