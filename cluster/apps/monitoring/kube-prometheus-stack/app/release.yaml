@@ -128,7 +128,11 @@ spec:
         replicas: 1
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         walCompression: true
-        alertingEndpoints: []
+        alertingEndpoints:
+          - namespace: monitoring
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
         enableAdminAPI: true
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
