@@ -30,7 +30,7 @@ spec:
       webhook:
         image:
           repository: ghcr.io/muhlba91/external-dns-provider-adguard
-          tag: v8.0.0
+          tag: v8.0.1
         env:
           - name: ADGUARD_URL
             value: "${ADGUARD_URL}"
