@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wordpress-test
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: wordpress
+      version: 6.8.0
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: wordpress-test
+    wordpressSkipInstall: false
+    replicaCount: 1
+    ingress:
+      enabled: true
+      pathType: Prefix
+      ingressClassName: "nginx"
+      hostname: "wordpress.${SECRET_DOMAIN}"
+      tls: true
+    persistence:
+      enabled: true
+      storageClass: "proxmox-csi"
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+    pdb:
+      enabled: false
+    mariadb:
+      enabled: false
+    externalDatabase:
+      host: mysql8.databases.svc.cluster.local
+      user: root
+      password: rootpassword
+      database: wordpress
