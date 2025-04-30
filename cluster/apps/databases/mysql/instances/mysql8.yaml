@@ -1,0 +1,21 @@
+---
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mysql8
+spec:
+  secretName: mysql8-secrets
+  tlsUseSelfSigned: true
+  instances: 1
+  version: 8.0.42
+  edition: community
+  router:
+    instances: 1
+    version: 8.0.42
+  datadirVolumeClaimTemplate:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: proxmox-csi
