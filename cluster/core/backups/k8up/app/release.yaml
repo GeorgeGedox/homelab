@@ -27,6 +27,8 @@ spec:
         enabled: true
       grafanaDashboard:
         enabled: true
+        additionalLabels:
+          - grafana_dashboard: '1'
     k8up:
       skipWithoutAnnotation: true
       envVars:
