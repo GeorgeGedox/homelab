@@ -29,7 +29,7 @@ servers:
           pods insecure
           fallthrough in-addr.arpa ip6.arpa
       - name: rewrite
-        parameters: name (.*).${SECRET_DOMAIN} 192.168.0.228
+        parameters: name regex (.*)\.${SECRET_DOMAIN/./\.} 192\.168\.0\.228
       - name: forward
         parameters: . /etc/resolv.conf
       - name: cache
