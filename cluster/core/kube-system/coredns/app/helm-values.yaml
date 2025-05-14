@@ -28,8 +28,6 @@ servers:
         configBlock: |-
           pods insecure
           fallthrough in-addr.arpa ip6.arpa
-      - name: rewrite
-        parameters: name regex (.*)\.${SECRET_DOMAIN/./\.} 192.168.0.228
       - name: forward
         parameters: . /etc/resolv.conf
       - name: cache
@@ -37,6 +35,18 @@ servers:
       - name: loop
       - name: reload
       - name: loadbalance
+  - zones:
+      - zone: ${SECRET_DOMAIN}
+        scheme: dns://
+        use_tcp: true
+    port: 53
+    plugins:
+      - name: errors
+      - name: forward
+        parameters: . 172.20.0.2
+      - name: cache
+        parameters: 30
+      - name: reload
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

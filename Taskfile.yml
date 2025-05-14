@@ -44,3 +44,17 @@ tasks:
         sops
         hashicorp/tap/terraform
         tflint
+
+  hack:shell:
+    desc: Start a privileged ubuntu pod and shell into it
+    cmds:
+      - kubectl apply -f {{.ROOT_DIR}}/hack/ubuntu-pod.yaml
+      - kubectl wait pod --for=condition=Ready=True ubuntu-shell
+      - kubectl -n default exec -it ubuntu-shell -- bash
+      - kubectl delete pod ubuntu-shell
+    interactive: true
+    preconditions:
+      - msg: Missing ubuntu pod file
+        sh: test -f {{.ROOT_DIR}}/hack/ubuntu-pod.yaml
+      - msg: Missing kubectl
+        sh: which kubectl
