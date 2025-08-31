@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./homepage/ks.yaml
-  - ./wordpress-test/ks.yaml
+  # - ./wordpress-test/ks.yaml
