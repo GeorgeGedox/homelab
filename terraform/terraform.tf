@@ -22,7 +22,7 @@ terraform {
 
     talos = {
       source  = "siderolabs/talos"
-      version = "0.7.1"
+      version = "0.9.0"
     }
 
     local = {
