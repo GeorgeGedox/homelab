@@ -44,6 +44,7 @@ tasks:
         sops
         hashicorp/tap/terraform
         tflint
+        siderolabs/tap/talosctl
 
   hack:shell:
     desc: Start a privileged ubuntu pod and shell into it

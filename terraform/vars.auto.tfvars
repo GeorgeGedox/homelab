@@ -4,7 +4,7 @@ cluster_data = {
 }
 
 talos_image = {
-  version           = "v1.9.5"
+  version           = "v1.11.3"
   arch              = "amd64"
   platform          = "nocloud"
   proxmox_datastore = "nas-tank"
